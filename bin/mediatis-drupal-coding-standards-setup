@@ -1,0 +1,63 @@
+#!/usr/bin/env php
+<?php
+
+use Mediatis\DrupalCodingStandards\DrupalCodingStandardsSetup;
+
+function includeIfExists(string $file): bool
+{
+    return file_exists($file) && include $file;
+}
+
+if (
+    !includeIfExists(__DIR__ . '/../../../autoload.php')
+    && !includeIfExists(__DIR__ . '/../vendor/autoload.php')
+    && !includeIfExists(__DIR__ . '/../../../../../vendor/autoload.php')
+) {
+    fwrite(STDERR, 'Install dependencies using Composer.' . PHP_EOL);
+    exit(1);
+}
+
+$binDirectory = $_composer_bin_dir ?? __DIR__ . '/../../../../bin';
+$targetPackageDirectory = realpath($binDirectory . '/../..');
+$codingStandardsPackageDirectory = realpath(__DIR__ . '/..');
+$requiredFolderPaths = ['src', 'tests/Unit', 'tests/Kernel', 'tests/Functional'];
+$examplePackagePath = 'example-module';
+$supportedPackageVersions = [
+    'php' => [
+        'packageKeys' => ['php'],
+        'versions' => [8.2, 8.3],
+    ],
+    'drupal' => [
+        'packageKeys' => ['drupal/core'],
+        'versions' => [10, 11],
+    ],
+];
+
+$reset = ($argv[1] ?? '') === 'reset';
+
+echo PHP_EOL;
+echo '#######################################################' . PHP_EOL;
+echo '#         MEDIATIS - DRUPAL CODING STANDARDS          #' . PHP_EOL;
+echo '#######################################################' . PHP_EOL;
+echo PHP_EOL;
+echo 'Setting up configuration...';
+try {
+    $codingStandardsSetup = new DrupalCodingStandardsSetup(
+        $targetPackageDirectory,
+        $codingStandardsPackageDirectory,
+        $requiredFolderPaths,
+        $examplePackagePath,
+        $supportedPackageVersions
+    );
+    if ($reset) {
+        $codingStandardsSetup->reset();
+    }
+    $codingStandardsSetup->setup();
+    echo ' success!' . PHP_EOL;
+    echo PHP_EOL;
+} catch (Exception $e) {
+    echo ' failed!' . PHP_EOL;
+    echo PHP_EOL;
+    echo 'Reason: ' . $e->getMessage() . PHP_EOL;
+    echo PHP_EOL;
+}

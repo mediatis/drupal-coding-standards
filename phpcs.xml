@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ruleset name="Drupal Module (PSR-12 compatible)">
+    <description>PHPCS configuration for Anyrel Drupal packages using PSR-12 formatting</description>
+
+    <!-- Use Drupal coding standard -->
+    <rule ref="Drupal">
+        <!-- Exclude rules that conflict with PSR-12 indentation (4 spaces) -->
+        <exclude name="Drupal.WhiteSpace.ScopeIndent"/>
+        <exclude name="Drupal.Arrays.Array.ArrayIndentation"/>
+        <!-- Exclude rules that conflict with PSR-12 brace placement (new line) -->
+        <exclude name="Drupal.Classes.ClassDeclaration.BraceOnNewLine"/>
+        <exclude name="Drupal.Functions.MultiLineFunctionDeclaration.BraceOnNewLine"/>
+        <!-- Exclude rules that conflict with PSR-12 multi-line function indentation -->
+        <exclude name="Drupal.Functions.MultiLineFunctionDeclaration.Indent"/>
+        <!-- Exclude rules that conflict with PSR-12 lowercase constants (true/false/null) -->
+        <exclude name="Generic.PHP.UpperCaseConstant"/>
+        <!-- Exclude rules that conflict with PHP-CS-Fixer whitespace/formatting -->
+        <exclude name="Squiz.WhiteSpace.FunctionSpacing"/>
+        <exclude name="Generic.Formatting.SpaceAfterCast"/>
+        <exclude name="Drupal.ControlStructures.ControlSignature.NewlineAfterCloseBrace"/>
+        <exclude name="Drupal.WhiteSpace.ScopeClosingBrace"/>
+        <!-- Exclude overly strict comment rules (inherited docs, self-explanatory methods) -->
+        <exclude name="Drupal.Commenting.FunctionComment.Missing"/>
+        <exclude name="Drupal.Commenting.ClassComment.Missing"/>
+        <exclude name="Drupal.Commenting.DataTypeNamespace.DataTypeNamespace"/>
+        <exclude name="Drupal.Commenting.FunctionComment.ParamCommentFullStop"/>
+        <exclude name="Drupal.Commenting.DocComment.MissingShort"/>
+        <exclude name="Drupal.Commenting.DocComment.ShortFullStop"/>
+        <exclude name="Drupal.Commenting.DocComment.ShortSingleLine"/>
+        <exclude name="Drupal.Commenting.FunctionComment.MissingParamComment"/>
+        <exclude name="Drupal.Commenting.FunctionComment.MissingReturnComment"/>
+        <exclude name="Drupal.Commenting.FunctionComment.ParamMissingDefinition"/>
+        <!-- Exclude operator spacing (handled by PHP-CS-Fixer) -->
+        <exclude name="Squiz.WhiteSpace.OperatorSpacing"/>
+        <!-- Exclude global class import rule (CS-Fixer imports them, we prefer no backslashes in code) -->
+        <exclude name="Drupal.Classes.UseGlobalClass"/>
+        <!-- Exclude line length rule (80 chars is too strict) -->
+        <exclude name="Drupal.Files.LineLength"/>
+        <!-- Exclude inline comment rules that conflict with our style -->
+        <exclude name="Drupal.Commenting.InlineComment.InvalidEndChar"/>
+        <exclude name="Drupal.Commenting.InlineComment.NotCapital"/>
+        <exclude name="Drupal.Commenting.InlineComment.SpacingBefore"/>
+        <!-- Exclude post-statement comment rule (we allow trailing comments on array values) -->
+        <exclude name="Drupal.Commenting.PostStatementComment.Found"/>
+        <!-- Exclude unused use detection (conflicts with imports used only in annotations) -->
+        <exclude name="Drupal.Classes.UnusedUseStatement.UnusedUse"/>
+    </rule>
+    <rule ref="DrupalPractice"/>
+
+    <!-- Drupal file extensions -->
+    <arg name="extensions" value="php,module,inc,install,test,profile,theme,css,info,txt,md,yml"/>
+
+    <!-- Show progress and colors -->
+    <arg value="sp"/>
+    <arg name="colors"/>
+
+    <!-- Ignore vendor and build directories -->
+    <exclude-pattern>*/.Build/*</exclude-pattern>
+    <exclude-pattern>*/vendor/*</exclude-pattern>
+    <exclude-pattern>*/node_modules/*</exclude-pattern>
+</ruleset>

@@ -1,0 +1,20 @@
+parameters:
+	level: 6
+	paths:
+		- ../../../../src
+		- ../../../../tests
+	reportUnmatchedIgnoredErrors: false
+	ignoreErrors:
+		# Drupal's ContainerInjectionInterface::create() pattern uses new static()
+		-
+			identifier: new.static
+		# phpstan-drupal bug: accessCheck() return type causes false positive
+		# https://github.com/mglaman/phpstan-drupal/issues/825
+		-
+			identifier: method.alreadyNarrowedType
+			message: '#accessCheck\(\)#'
+		# PHPUnit assertions are static but idiomatically called via $this->
+		-
+			identifier: staticMethod.dynamicCall
+			paths:
+				- ../../../../tests/*
